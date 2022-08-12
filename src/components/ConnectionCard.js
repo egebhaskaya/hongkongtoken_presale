@@ -20,7 +20,7 @@ const ConnectionCard = () => {
 
   const { account, deactivate, chainId } = useWeb3React();
 
-  const contractAddress = "0xeeab7b95f39E5F43848999e788ac9808F1167d49";
+  const contractAddress = "0x9420203009BEDC686843248268A66D01208228EE";
   const tokenPrice = 0.00008;
 
   useEffect(() => {
@@ -75,7 +75,7 @@ const ConnectionCard = () => {
 
   const getContractBalance = async () => {
     const contractBalance = await contract.balanceOf(
-      "0xeeab7b95f39E5F43848999e788ac9808F1167d49"
+      "0x9420203009BEDC686843248268A66D01208228EE"
     );
     setContractBalance(ethers.utils.formatEther(contractBalance));
   };
@@ -94,7 +94,7 @@ const ConnectionCard = () => {
     try {
       if (userBalance < cost) {
         setErrorMessage("Balance Insufficient");
-      } else if (cost < 0.1) {
+      } else if (cost < 0.2) {
         setErrorMessage("You must at least but 0.2 BNB!");
       } else if (cost > 4) {
         setErrorMessage("You can't more than 4 BNB!");
@@ -137,7 +137,7 @@ const ConnectionCard = () => {
                 value={cost}
                 onChange={(event) => setCost(event.target.value)}
               ></StyledInput>
-              <StyledBuyButton onClick={buyTokens}>BuyToken</StyledBuyButton>
+              <StyledBuyButton onClick={buyTokens}>Buy Token!</StyledBuyButton>
               <h3>{errorMessage}</h3>
             </TokenBuyBox>
           </StyledConnectionTextContainer>
@@ -233,7 +233,7 @@ const TokenBuyBox = styled.div`
 `;
 
 const StyledInput = styled.input`
-  width: 100%;
+  width: 95%;
   height: 30px;
   outline: none;
   ::-webkit-outer-spin-button,
@@ -244,7 +244,7 @@ const StyledInput = styled.input`
 `;
 
 const StyledBuyButton = styled.button`
-  height: 40px;
+  height: 60px;
   width: 100px;
   border-radius: 10px;
   font-family: roboto;
