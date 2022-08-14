@@ -34,6 +34,14 @@ const ConnectionCard = () => {
       let contract = new ethers.Contract(contractAddress, contractabi, signer);
       setContract(contract);
     } else if (connector === "walletconnect") {
+      let provider = new ethers.providers.Web3Provider(window.ethereum);
+      setProvider(provider);
+
+      let signer = provider.getSigner();
+      setSigner(signer);
+
+      let contract = new ethers.Contract(contractAddress, contractabi, signer);
+      setContract(contract);
     }
   }, [account, connector]);
 
@@ -92,7 +100,7 @@ const ConnectionCard = () => {
 
   const buyTokens = async () => {
     try {
-      if (userBalance < cost) {
+      if (userBalance > cost) {
         setErrorMessage("Balance Insufficient");
       } else if (cost < 0.2) {
         setErrorMessage("You must at least but 0.2 BNB!");
@@ -106,8 +114,6 @@ const ConnectionCard = () => {
       console.log(e);
     }
   };
-
-  console.log(typeof account);
 
   return (
     <>
