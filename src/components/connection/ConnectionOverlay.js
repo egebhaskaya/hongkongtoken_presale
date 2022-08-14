@@ -7,7 +7,7 @@ import walletconnectLogo from "./walletconnect.svg";
 import styled from "styled-components";
 
 const ConnectionOverlay = ({ closeOverlay, connectorInfo }) => {
-  const { active, account, activate } = useWeb3React();
+  const { activate } = useWeb3React();
 
   const connectMetamask = async () => {
     try {
@@ -43,11 +43,6 @@ const ConnectionOverlay = ({ closeOverlay, connectorInfo }) => {
             Connect Walletconnect
           </ConnectButton>
         </ConnectButtonGroup>
-        {active ? (
-          <Text>Connected with {account}</Text>
-        ) : (
-          <h3>Not connected</h3>
-        )}
       </Card>
     </Background>
   );
@@ -58,7 +53,7 @@ const Background = styled.div`
   justify-content: center;
   align-items: center;
   z-index: 998;
-  background-color: #f0f8ff;
+  background-color: white;
   position: absolute;
   width: 100%;
   height: 100%;
@@ -71,10 +66,19 @@ const Card = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  width: 50%;
-  background-color: gray;
+  width: 30%;
+  background-color: white;
+  border: 2px solid skyblue;
+
   border-radius: 10px;
   z-index: 998;
+  @media (max-width: 600px) {
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    right: 0px;
+    margin-bottom: 20px;
+  }
 `;
 
 const CloseButtonGroup = styled.div`
@@ -85,29 +89,66 @@ const CloseButtonGroup = styled.div`
 
 const CloseButton = styled.button`
   display: flex;
-  margin-right: 10px;
-  margin-top: 10px;
-  margin-bottom: 30px;
+  justfiy-content: center;
+  align-items: center;
+  border-radius: 10px;
+  font-family: roboto;
+  border: 0;
+  color: black;
+  font-weight: 600;
+  font-size: 18px;
+  transition: 0.25s;
+  padding: 10px;
+  :hover {
+    background-color: skyblue;
+    cursor: pointer;
+    color: black;
+    transition: 0.25s;
+  }
+  @media (max-width: 600px) {
+    width: 10%;
+  }
 `;
 
 const ConnectButtonGroup = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  width: 100%;
+  width: 95%;
+  gap: 10px;
+  margin-top: 10px;
+  @media (max-width: 600px) {
+    flex-direction: column;
+    justify-content: space-between;
+  }
 `;
 
 const ConnectButton = styled.button`
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  justfiy-content: center;
   align-items: center;
-  width: 40%;
-  height: 100px;
+  border-radius: 10px;
+  font-family: roboto;
+  border: 0;
+  color: black;
+  font-weight: 600;
+  font-size: 18px;
+  transition: 0.25s;
+  padding: 10px;
+  margin-bottom: 10px;
+  :hover {
+    background-color: skyblue;
+    cursor: pointer;
+    color: black;
+    transition: 0.25s;
+  }
+  @media (max-width: 600px) {
+    width: 70%;
+  }
 `;
 const ConnectImage = styled.img`
   width: 45px;
-  margin-bottom: 10px;
+  margin-bottom: 0px;
 `;
 
 const Text = styled.h3`

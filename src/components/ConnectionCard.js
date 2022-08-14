@@ -4,6 +4,10 @@ import { useWeb3React } from "@web3-react/core";
 import styled from "styled-components";
 import { ethers } from "ethers";
 import contractabi from "./contract/contract_abi.json";
+import bnblogo from "../styles/bnb_logo.png";
+import tokenlogo from "../styles/token.png";
+import hklogo from "../styles/hk.png";
+import fwdarrow from "../styles/forward_arrow.svg";
 
 const ConnectionCard = () => {
   const [showModal, setShowModal] = useState(false);
@@ -96,11 +100,9 @@ const ConnectionCard = () => {
       });
   };
 
-  console.log(cost);
-
   const buyTokens = async () => {
     try {
-      if (userBalance > cost) {
+      if (userBalance < cost) {
         setErrorMessage("Balance Insufficient");
       } else if (cost < 0.2) {
         setErrorMessage("You must at least but 0.2 BNB!");
@@ -127,26 +129,45 @@ const ConnectionCard = () => {
           </ConnectButtonsContainer>
         </ConnectContainer>
         <StyledConnectionCard>
+          <StyledText>HONGKONG TOKEN PRESALE!</StyledText>
+          <StyledTokenImage src={tokenlogo} alt="token logo"></StyledTokenImage>
           <StyledConnectionTextContainer>
-            <h3>Hongkong Token Presale!</h3>
-            <h3>Contract Balance: {contractBalance}</h3>
-            <h3>
-              Wallet Address:
-              {account !== undefined ? account.substring(0, 8) : ""}
-              ...
-            </h3>
-            <h3>User Balance: {userBalance} BNB</h3>
-            <TokenBuyBox>
-              <StyledInput
-                placeholder="BNB"
-                type="number"
-                value={cost}
-                onChange={(event) => setCost(event.target.value)}
-              ></StyledInput>
-              <StyledBuyButton onClick={buyTokens}>Buy Token!</StyledBuyButton>
-              <h3>{errorMessage}</h3>
-            </TokenBuyBox>
+            <ContractBalanceTextContainer>
+              <StyledText>Contract Balance: </StyledText>
+              <StyledText>{contractBalance} HK</StyledText>
+            </ContractBalanceTextContainer>
+            <ContractBalanceTextContainer>
+              <StyledText>Wallet Address:</StyledText>
+              <StyledText>
+                {account !== undefined ? account.substring(0, 8) : ""}
+                ...
+              </StyledText>
+            </ContractBalanceTextContainer>
+            <ContractBalanceTextContainer>
+              <StyledText>User Balance:</StyledText>
+              <StyledText>{userBalance} BNB</StyledText>
+            </ContractBalanceTextContainer>
           </StyledConnectionTextContainer>
+          <TokenBuyBox>
+            <ImageBox>
+              <StyledImage src={bnblogo} alt="bnb logo" />
+              <StyledImage src={fwdarrow} alt="bnb logo" />
+              <StyledImage src={hklogo} alt="hk logo" />
+            </ImageBox>
+            <StyledInput
+              placeholder="0.00 BNB"
+              type="number"
+              value={cost}
+              onChange={(event) => setCost(event.target.value)}
+            ></StyledInput>
+            <StyledBuyButton
+              onClick={buyTokens}
+              disabled={account === undefined ? true : false}
+            >
+              Buy Token!
+            </StyledBuyButton>
+            <StyledText>{errorMessage}</StyledText>
+          </TokenBuyBox>
         </StyledConnectionCard>
       </Container>
       {showModal && (
@@ -172,9 +193,18 @@ const ConnectContainer = styled.div`
   right: 30px;
   top: 30px;
   padding: 20px;
-  border-radius: 20px;
+  border-radius: 10px;
   background-color: white;
   border: 2px solid skyblue;
+  @media (max-width: 600px) {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    right: 0px;
+    margin-bottom: 20px;
+  }
 `;
 
 const ConnectButtonsContainer = styled.div`
@@ -215,11 +245,11 @@ const StyledConnectionCard = styled.div`
   align-items: center;
   flex-direction: column;
   width: 300px;
-  border-radius: 20px;
+  border-radius: 10px;
   background-color: white;
   padding: 20px;
   border: 2px solid skyblue;
-  margin-top: 150px;
+  margin-top: 20px;
 `;
 
 const StyledConnectionTextContainer = styled.div`
@@ -228,6 +258,17 @@ const StyledConnectionTextContainer = styled.div`
   align-items: space-between;
   flex-direction: column;
   width: 100%;
+  border: 2px solid skyblue;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 20px;
+`;
+
+const ContractBalanceTextContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 `;
 
 const TokenBuyBox = styled.div`
@@ -235,12 +276,28 @@ const TokenBuyBox = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  gap: 20px;
+  width: 100%;
+  border: 2px solid skyblue;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 0px;
+`;
+const ImageBox = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const StyledInput = styled.input`
   width: 95%;
-  height: 30px;
+  height: 40px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border: 2px solid skyblue;
+  border-radius: 10px;
+  font-familiy: roboto;
+  font-size: 20px;
+  text-align: center;
   outline: none;
   ::-webkit-outer-spin-button,
   ::-webkit-inner-spin-button {
@@ -249,9 +306,18 @@ const StyledInput = styled.input`
   }
 `;
 
+const StyledImage = styled.img`
+  width: 30px;
+`;
+
+const StyledTokenImage = styled.img`
+  margin-top: -20px;
+  width: 150px;
+`;
+
 const StyledBuyButton = styled.button`
-  height: 60px;
-  width: 100px;
+  height: 50px;
+  width: 300px;
   border-radius: 10px;
   font-family: roboto;
   border: 0;
@@ -266,6 +332,11 @@ const StyledBuyButton = styled.button`
     width: 300px;
     height: 50px;
     transition: 0.25s;
+  }
+  :disabled {
+    background-color: gray;
+    color: white;
+    cursor: auto;
   }
 `;
 
