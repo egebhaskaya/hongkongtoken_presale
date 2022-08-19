@@ -129,8 +129,13 @@ const ConnectionCard = () => {
           </ConnectButtonsContainer>
         </ConnectContainer>
         <StyledConnectionCard>
-          <StyledText>HONGKONG TOKEN PRESALE!</StyledText>
-          <StyledTokenImage src={tokenlogo} alt="token logo"></StyledTokenImage>
+          <WelcomeContainer>
+            <StyledTokenImage
+              src={tokenlogo}
+              alt="token logo"
+            ></StyledTokenImage>
+            <StyledText>HONGKONG TOKEN PRESALE!</StyledText>
+          </WelcomeContainer>
           <StyledConnectionTextContainer>
             <ContractBalanceTextContainer>
               <StyledText>Contract Balance: </StyledText>
@@ -194,8 +199,8 @@ const ConnectContainer = styled.div`
   top: 30px;
   padding: 20px;
   border-radius: 10px;
-  background-color: white;
-  border: 2px solid skyblue;
+  background-color: black;
+  border: 8px solid #23beff;
   @media (max-width: 600px) {
     position: relative;
     display: flex;
@@ -236,20 +241,29 @@ const StyledConnectButton = styled.button`
 `;
 
 const StyledText = styled.h3`
-  color: black;
+  color: white;
+  font-size: 20px;
 `;
 
 const StyledConnectionCard = styled.div`
+  position: absolute;
+  margin-top: -700px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  width: 300px;
+  width: 500px;
   border-radius: 10px;
-  background-color: white;
+  background-color: black;
   padding: 20px;
-  border: 2px solid skyblue;
-  margin-top: 20px;
+  border: 8px solid #23beff;
+`;
+
+const WelcomeContainer = styled.div`
+  margin-top: -20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const StyledConnectionTextContainer = styled.div`
@@ -257,8 +271,8 @@ const StyledConnectionTextContainer = styled.div`
   justify-content: center;
   align-items: space-between;
   flex-direction: column;
-  width: 100%;
-  border: 2px solid skyblue;
+  width: 95%;
+  border: 8px solid #23beff;
   border-radius: 10px;
   padding: 10px;
   margin-bottom: 20px;
@@ -276,8 +290,8 @@ const TokenBuyBox = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  width: 100%;
-  border: 2px solid skyblue;
+  width: 95%;
+  border: 8px solid #23beff;
   border-radius: 10px;
   padding: 10px;
   margin-bottom: 0px;
@@ -311,13 +325,12 @@ const StyledImage = styled.img`
 `;
 
 const StyledTokenImage = styled.img`
-  margin-top: -20px;
   width: 150px;
 `;
 
 const StyledBuyButton = styled.button`
   height: 50px;
-  width: 300px;
+  width: 97%;
   border-radius: 10px;
   font-family: roboto;
   border: 0;
@@ -326,10 +339,9 @@ const StyledBuyButton = styled.button`
   font-size: 18px;
   transition: 0.25s;
   :hover {
-    background-color: skyblue;
+    background-color: #23beff;
     cursor: pointer;
     color: black;
-    width: 300px;
     height: 50px;
     transition: 0.25s;
   }

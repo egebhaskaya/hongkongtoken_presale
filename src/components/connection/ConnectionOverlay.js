@@ -28,8 +28,9 @@ const ConnectionOverlay = ({ closeOverlay, connectorInfo }) => {
   };
 
   return (
-    <Background onClick={() => closeOverlay(false)}>
-      <Card>
+    <>
+      <Background onClick={() => closeOverlay(false)} />
+      <ConnectionCard>
         <CloseButtonGroup>
           <CloseButton onClick={() => closeOverlay(false)}>x</CloseButton>
         </CloseButtonGroup>
@@ -43,35 +44,33 @@ const ConnectionOverlay = ({ closeOverlay, connectorInfo }) => {
             Connect Walletconnect
           </ConnectButton>
         </ConnectButtonGroup>
-      </Card>
-    </Background>
+      </ConnectionCard>
+    </>
   );
 };
 
 const Background = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 998;
-  background-color: white;
   position: absolute;
+  top: 0px;
   width: 100%;
   height: 100%;
-  top: 0;
-  z-index: 999;
+  background-color: gray;
+  opacity: 0.6;
+  z-index: 998;
 `;
 
-const Card = styled.div`
+const ConnectionCard = styled.div`
+  position: absolute;
+  z-index: 999;
+  top: 35%;
+  left: 35%;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  width: 30%;
   background-color: white;
   border: 2px solid skyblue;
-
   border-radius: 10px;
-  z-index: 998;
   @media (max-width: 600px) {
     justify-content: center;
     align-items: center;
@@ -149,10 +148,6 @@ const ConnectButton = styled.button`
 const ConnectImage = styled.img`
   width: 45px;
   margin-bottom: 0px;
-`;
-
-const Text = styled.h3`
-  font-family: Roboto;
 `;
 
 export default ConnectionOverlay;
