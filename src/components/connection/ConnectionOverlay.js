@@ -68,8 +68,8 @@ const ConnectionCard = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background-color: white;
-  border: 2px solid skyblue;
+  background-color: black;
+  border: 8px solid #23beff;
   border-radius: 10px;
   @media (max-width: 600px) {
     justify-content: center;
@@ -98,6 +98,8 @@ const CloseButton = styled.button`
   font-size: 18px;
   transition: 0.25s;
   padding: 10px;
+  margin-right: 5px;
+  margin-top: 5px;
   :hover {
     background-color: skyblue;
     cursor: pointer;

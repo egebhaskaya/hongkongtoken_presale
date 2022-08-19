@@ -7,7 +7,7 @@ import contractabi from "./contract/contract_abi.json";
 import bnblogo from "../styles/bnb_logo.png";
 import tokenlogo from "../styles/token.png";
 import hklogo from "../styles/hk.png";
-import fwdarrow from "../styles/forward_arrow.svg";
+import forwardarrow from "../styles/fwdarw.png";
 
 const ConnectionCard = () => {
   const [showModal, setShowModal] = useState(false);
@@ -22,7 +22,7 @@ const ConnectionCard = () => {
   const [cost, setCost] = useState();
   const [errorMessage, setErrorMessage] = useState();
 
-  const { account, deactivate, chainId } = useWeb3React();
+  const { account, chainId } = useWeb3React();
 
   const contractAddress = "0x9420203009BEDC686843248268A66D01208228EE";
   const tokenPrice = 0.00008;
@@ -156,7 +156,7 @@ const ConnectionCard = () => {
           <TokenBuyBox>
             <ImageBox>
               <StyledImage src={bnblogo} alt="bnb logo" />
-              <StyledImage src={fwdarrow} alt="bnb logo" />
+              <StyledSwapIcon src={forwardarrow} alt="bnb logo" />
               <StyledImage src={hklogo} alt="hk logo" />
             </ImageBox>
             <StyledInput
@@ -307,7 +307,7 @@ const StyledInput = styled.input`
   height: 40px;
   margin-top: 20px;
   margin-bottom: 20px;
-  border: 2px solid skyblue;
+  border: 8px solid #23beff;
   border-radius: 10px;
   font-familiy: roboto;
   font-size: 20px;
@@ -322,10 +322,19 @@ const StyledInput = styled.input`
 
 const StyledImage = styled.img`
   width: 30px;
+  border: 5px solid #23beff;
+  border-radius: 30px;
+`;
+
+const StyledSwapIcon = styled.img`
+  width: 30px;
+  border-radius: 30px;
+  margin-right: 10px;
+  margin-left: 10px;
 `;
 
 const StyledTokenImage = styled.img`
-  width: 150px;
+  width: 80px;
 `;
 
 const StyledBuyButton = styled.button`
