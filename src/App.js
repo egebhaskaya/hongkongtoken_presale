@@ -1,13 +1,13 @@
 import React from "react";
 import ConnectionCard from "./components/ConnectionCard";
 import styled from "styled-components";
-import backgroundVideo from "./styles/slider.mp4";
+import backgroundVideo from "./media/videos/slider.mp4";
 
 const BackgroundContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  height: 100%;
 `;
 
 const BackgroundVideo = styled.video`
@@ -15,7 +15,7 @@ const BackgroundVideo = styled.video`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 100%;
+  z-index: -1;
 `;
 
 function App() {
