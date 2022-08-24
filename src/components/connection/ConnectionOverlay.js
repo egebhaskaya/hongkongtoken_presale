@@ -36,12 +36,12 @@ const ConnectionOverlay = ({ closeOverlay, connectorInfo }) => {
         </CloseButtonGroup>
         <ConnectButtonGroup>
           <ConnectButton onClick={connectMetamask}>
-            <ConnectImage src={metamaskLogo} alt="blablaa"></ConnectImage>
-            Connect Metamask
+            <ConnectImage src={metamaskLogo} alt="blablaa" />
+            CONNECT METAMASK
           </ConnectButton>
           <ConnectButton onClick={connectWalletConnect}>
             <ConnectImage src={walletconnectLogo} alt="blablaa"></ConnectImage>
-            Connect Walletconnect
+            CONNECT WALLETCONNECT
           </ConnectButton>
         </ConnectButtonGroup>
       </ConnectionCard>
@@ -61,6 +61,8 @@ const Background = styled.div`
 
 const ConnectionCard = styled.div`
   position: absolute;
+  width: 35%;
+  height: 30%;
   z-index: 999;
   top: 35%;
   left: 35%;
@@ -69,14 +71,17 @@ const ConnectionCard = styled.div`
   align-items: center;
   flex-direction: column;
   background-color: black;
-  border: 8px solid #23beff;
-  border-radius: 10px;
-  @media (max-width: 600px) {
-    justify-content: center;
-    align-items: center;
-    width: 300px;
-    right: 0px;
-    margin-bottom: 20px;
+  border: 8px solid;
+  border-image: linear-gradient(
+      90deg,
+      rgba(230, 0, 252, 1) 0%,
+      rgba(84, 4, 226, 1) 100%
+    )
+    1;
+  @media (max-width: 830px) {
+    width: 80%;
+    left: 8%;
+    height: 35%;
   }
 `;
 
@@ -93,21 +98,21 @@ const CloseButton = styled.button`
   border-radius: 10px;
   font-family: roboto;
   border: 0;
-  color: black;
+  color: white;
+  background-color: #e101f5;
   font-weight: 600;
   font-size: 18px;
   transition: 0.25s;
-  padding: 10px;
-  margin-right: 5px;
-  margin-top: 5px;
+  margin-right: 25px;
+  margin-top: -20px;
   :hover {
-    background-color: skyblue;
+    background-color: white;
+    color: #e101f5;
     cursor: pointer;
-    color: black;
     transition: 0.25s;
   }
-  @media (max-width: 600px) {
-    width: 10%;
+  @media (max-width: 865px) {
+    margin-right: 15px;
   }
 `;
 
@@ -115,6 +120,7 @@ const ConnectButtonGroup = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
+  flex-direction: column;
   width: 95%;
   gap: 10px;
   margin-top: 10px;
@@ -128,28 +134,36 @@ const ConnectButton = styled.button`
   display: flex;
   justfiy-content: center;
   align-items: center;
+  width: 60%;
+  background-color: #e101f5;
   border-radius: 10px;
   font-family: roboto;
   border: 0;
-  color: black;
+  color: white;
   font-weight: 600;
-  font-size: 18px;
+  font-size: 16px;
   transition: 0.25s;
   padding: 10px;
   margin-bottom: 10px;
+  text-align: center;
   :hover {
-    background-color: skyblue;
+    background-color: white;
     cursor: pointer;
-    color: black;
+    color: #e101f5;
     transition: 0.25s;
   }
-  @media (max-width: 600px) {
-    width: 70%;
+  @media (max-width: 1150px) {
+    width: 80%;
   }
 `;
 const ConnectImage = styled.img`
+  display: flex;
+  justfiy-content: center;
+  align-items: center;
   width: 45px;
   margin-bottom: 0px;
+  margin-right: 15px;
+  margin-left: 5px;
 `;
 
 export default ConnectionOverlay;

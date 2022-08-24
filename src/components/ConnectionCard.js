@@ -15,6 +15,7 @@ import hktoken from "../media/images/hktoken_logo2.png";
 import twitterIcon from "../media/socialmedia/twitter-logo.png";
 import instagramIcon from "../media/socialmedia/instagram-logo.png";
 import discordIcon from "../media/socialmedia/discord-logo.png";
+import telegramIcon from "../media/socialmedia/telegram-logo.png";
 
 const ConnectionCard = () => {
   const [showModal, setShowModal] = useState(false);
@@ -146,22 +147,24 @@ const ConnectionCard = () => {
   return (
     <>
       <Container>
-        <ConnectContainer>
-          <a
-            href="https://www.hongkongtoken.com/en"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <HKLogo1 src={hklogo} alt="wfwef" />
-          </a>
-          <ConnectButtonsContainer>
-            <StyledText>{message}</StyledText>
-            <StyledConnectButton onClick={() => setShowModal(true)}>
-              CONNECT
-            </StyledConnectButton>
-          </ConnectButtonsContainer>
-        </ConnectContainer>
         <Background>
+          <ConnectContainer>
+            <HomeIcon>
+              <a
+                href="https://www.hongkongtoken.com/en"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <HKLogo1 src={hklogo} alt="wfwef" />
+              </a>
+            </HomeIcon>
+            <ConnectButtonsContainer>
+              <StyledText>{message}</StyledText>
+              <StyledConnectButton onClick={() => setShowModal(true)}>
+                CONNECT
+              </StyledConnectButton>
+            </ConnectButtonsContainer>
+          </ConnectContainer>
           <MainContainer>
             <ContentContainer>
               <VideoAndInfoContainer>
@@ -261,22 +264,31 @@ const ConnectionCard = () => {
               </ContractAddressContainer>
             </ContractInfo>
             <AboutInfo>
-              <FooterLink
-                href="https://twitter.com/HongkongToken?t=XmVdeUnRMKztX8odflZ2og&s=09"
-                target="_blank"
-              >
-                <FooterIcon src={twitterIcon} />
-              </FooterLink>
-              <FooterLink
-                href="https://www.instagram.com/hongkongtoken/?igshid=YmMyMTA2M2Y%3D"
-                target="_blank"
-              >
-                <FooterIcon src={instagramIcon} />
-              </FooterLink>
-              <FooterLink href="https://discord.gg/b9GbjrVXVU" target="_blank">
-                <FooterIcon src={discordIcon} />
-              </FooterLink>
-              <FooterLink></FooterLink>
+              <AboutLinkContainer>
+                <FooterLink
+                  href="https://twitter.com/HongkongToken?t=XmVdeUnRMKztX8odflZ2og&s=09"
+                  target="_blank"
+                >
+                  <FooterIcon src={twitterIcon} />
+                </FooterLink>
+                <FooterLink
+                  href="https://www.instagram.com/hongkongtoken/?igshid=YmMyMTA2M2Y%3D"
+                  target="_blank"
+                >
+                  <FooterIcon src={instagramIcon} />
+                </FooterLink>
+                <FooterLink
+                  href="https://discord.gg/b9GbjrVXVU"
+                  target="_blank"
+                >
+                  <FooterIcon src={discordIcon} />
+                </FooterLink>
+                <FooterLink href="https://t.me/hongkongglobal" target="_blank">
+                  <FooterIcon src={telegramIcon} />
+                </FooterLink>
+              </AboutLinkContainer>
+              <AboutTextContainer></AboutTextContainer>
+              <AboutText>© 2022 All Rights Reserved.</AboutText>
             </AboutInfo>
           </Footer>
         </Background>
@@ -308,6 +320,9 @@ const Footer = styled.div`
   background-color: black;
   margin-top: 40px;
   padding-bottom: 20px;
+  @media (max-width: 865px) {
+    flex-direction: column;
+  }
 `;
 
 const ContractInfo = styled.div`
@@ -320,7 +335,31 @@ const AboutInfo = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+  width: 10%;
+  @media (max-width: 865px) {
+    width: 40%;
+    margin-top: 5%;
+  }
+`;
+
+const AboutLinkContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+`;
+
+const AboutTextContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+`;
+
+const AboutText = styled.h3`
   color: white;
+  font-size: 12px;
 `;
 
 const FooterLink = styled.a``;
@@ -328,8 +367,9 @@ const FooterLink = styled.a``;
 const FooterIcon = styled.img`
   background-color: #e101f5;
   width: 20px;
+  border-radius: 3px;
   :hover {
-    background-color: white;
+    background-color: lightgray;
   }
 `;
 
@@ -356,6 +396,9 @@ const MainContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 85%;
+  @media (max-width: 865px) {
+    width: 100%;
+  }
 `;
 
 const ContentContainer = styled.div`
@@ -364,6 +407,11 @@ const ContentContainer = styled.div`
   align-items: space-between;
   width: 100%;
   height: 100%;
+  @media (max-width: 865px) {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 const ConnectContainer = styled.div`
@@ -373,6 +421,18 @@ const ConnectContainer = styled.div`
   width: 85%;
   height: 150px;
   border-radius: 10px;
+  @media (max-width: 865px) {
+    flex-direction: column;
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
+`;
+
+const HomeIcon = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 `;
 
 const StyledInfo = styled.div`
@@ -404,6 +464,12 @@ const InfoText = styled.h3`
   font-size: 30px;
   margin: 0px;
   padding: 5px;
+  @media (max-width: 1230px) {
+    font-size: 20px;
+  }
+  @media (max-width: 865px) {
+    font-size: 16px;
+  }
 `;
 
 const InfoText2 = styled.h3`
@@ -411,6 +477,9 @@ const InfoText2 = styled.h3`
   font-size: 30px;
   margin: 0px;
   padding: 10px;
+  @media (max-width: 865px) {
+    font-size: 20px;
+  }
 `;
 
 const ConnectButtonsContainer = styled.div`
@@ -420,10 +489,16 @@ const ConnectButtonsContainer = styled.div`
   width: 100%;
   align-items: center;
   gap: 20px;
+  @media (max-width: 865px) {
+    justify-content: center;
+  }
 `;
 
 const HKLogo1 = styled.img`
   width: 90px;
+  @media (max-width: 865px) {
+    width: 75px;
+  }
 `;
 
 const StyledConnectButton = styled.button`
@@ -447,6 +522,9 @@ const StyledText = styled.h3`
   color: white;
   font-size: 20px;
   margin-left: 3px;
+  @media (max-width: 865px) {
+    font-size: 16px;
+  }
 `;
 
 const StyledConnectionCard = styled.div`
@@ -465,6 +543,11 @@ const StyledConnectionCard = styled.div`
       rgba(84, 4, 226, 1) 100%
     )
     1;
+
+  @media (max-width: 865px) {
+    width: 78%;
+    margin-top: 20px;
+  }
 `;
 
 const WelcomeContainer = styled.div`
@@ -568,6 +651,9 @@ const StyledBuyButton = styled.button`
     color: white;
     cursor: auto;
   }
+  @media (max-width: 865px) {
+    width: 50%;
+  }
 `;
 
 const StyledTokenCounter = styled.h3`
@@ -634,6 +720,13 @@ const VideoAndInfoContainer = styled.div`
   align-items: center;
   flex-direction: column;
   width: 45%;
+  @media (max-width: 1230px) {
+    justify-content: space-around;
+  }
+  @media (max-width: 865px) {
+    width: 85%;
+    gap: 20px;
+  }
 `;
 
 const VideoContainer = styled.div`
