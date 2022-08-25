@@ -35,7 +35,7 @@ const ConnectionCard = () => {
 
   const { account, chainId } = useWeb3React();
 
-  const contractAddress = "0x9420203009BEDC686843248268A66D01208228EE";
+  const contractAddress = "0x7b7C295adc4B27C58e0465AE0505CF33c1fD964C";
   const tokenPrice = 0.00008;
 
   useEffect(() => {
