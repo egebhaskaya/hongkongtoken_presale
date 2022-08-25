@@ -114,7 +114,7 @@ const ConnectionCard = () => {
 
   const getContractBalance = async () => {
     const contractBalance = await contract.balanceOf(
-      "0x9420203009BEDC686843248268A66D01208228EE"
+      "0x7b7C295adc4B27C58e0465AE0505CF33c1fD964C"
     );
     setContractBalance(ethers.utils.formatEther(contractBalance));
   };
