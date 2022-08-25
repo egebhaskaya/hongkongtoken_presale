@@ -545,8 +545,9 @@ const StyledConnectionCard = styled.div`
     1;
 
   @media (max-width: 865px) {
-    width: 78%;
+    width: 85%;
     margin-top: 20px;
+    padding: 0px;
   }
 `;
 
@@ -567,6 +568,9 @@ const StyledConnectionTextContainer = styled.div`
   border-radius: 30px;
   padding: 10px;
   margin-bottom: 20px;
+  @media (max-width: 865px) {
+    width: 85%;
+  }
 `;
 
 const ContractBalanceTextContainer = styled.div`
@@ -586,6 +590,10 @@ const TokenBuyBox = styled.div`
   border-radius: 30px;
   padding: 10px;
   margin-bottom: 0px;
+  @media (max-width: 865px) {
+    margin-bottom: 20px;
+    width: 85%;
+  }
 `;
 const ImageBox = styled.div`
   display: flex;
@@ -678,6 +686,9 @@ const StyledWelcomeText = styled.h3`
   font-family: Roboto;
   font-weight: 600;
   margin: 0px;
+  @media (max-width: 865px) {
+    font-size: 30px;
+  }
 `;
 
 const ContractAddressContainer = styled.div`
