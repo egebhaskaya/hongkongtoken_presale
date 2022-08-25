@@ -136,7 +136,6 @@ const ConnectionCard = () => {
       } else if (cost > 40) {
         setErrorMessage("MAX BUY 40 BNB!");
       } else {
-        
         setErrorMessage("");
         await contract.buyTokens({ value: (cost * 10 ** 18).toString() });
       }
