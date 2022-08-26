@@ -95,9 +95,6 @@ const ConnectionCard = () => {
     };
   });
 
-  console.log(signer);
-  console.log(account);
-
   useEffect(() => {
     let tokenAmount = parseFloat(cost) / tokenPrice;
 
@@ -124,25 +121,31 @@ const ConnectionCard = () => {
   };
 
   const getUserBalance = (address) => {
-    window.ethereum
-      .request({ method: "eth_getBalance", params: [address, "latest"] })
-      .then((balance) => {
+    if (connector === "metamask") {
+      window.ethereum
+        .request({ method: "eth_getBalance", params: [address, "latest"] })
+        .then((balance) => {
+          setUserBalance(ethers.utils.formatEther(balance));
+        });
+    } else if (connector === "walletconnect") {
+      provider.getBalance(account).then((balance) => {
         setUserBalance(ethers.utils.formatEther(balance));
       });
+    }
   };
 
   const buyTokens = async () => {
     try {
-      // if (userBalance < cost) {
-      //   setErrorMessage("BALANCE INSUFFICIENT");
-      // } else if (cost < 0.2) {
-      //   setErrorMessage("MIN BUY 0.2 BNB!");
-      // } else if (cost > 40) {
-      //   setErrorMessage("MAX BUY 40 BNB!");
-      // } else {
-      //   setErrorMessage("");
-      await contract.buyTokens({ value: (cost * 10 ** 18).toString() });
-      // }
+      if (userBalance < cost) {
+        setErrorMessage("BALANCE INSUFFICIENT");
+      } else if (cost < 0.2) {
+        setErrorMessage("MIN BUY 0.2 BNB!");
+      } else if (cost > 40) {
+        setErrorMessage("MAX BUY 40 BNB!");
+      } else {
+        setErrorMessage("");
+        await contract.buyTokens({ value: (cost * 10 ** 18).toString() });
+      }
     } catch (e) {
       console.log(e);
     }
