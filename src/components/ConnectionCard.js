@@ -16,7 +16,6 @@ import twitterIcon from "../media/socialmedia/twitter-logo.png";
 import instagramIcon from "../media/socialmedia/instagram-logo.png";
 import discordIcon from "../media/socialmedia/discord-logo.png";
 import telegramIcon from "../media/socialmedia/telegram-logo.png";
-import { walletconnect } from "./connection/connectors";
 
 const ConnectionCard = () => {
   const [showModal, setShowModal] = useState(false);
@@ -37,6 +36,7 @@ const ConnectionCard = () => {
   const { account, chainId } = useWeb3React();
 
   const contractAddress = "0x7b7C295adc4B27C58e0465AE0505CF33c1fD964C";
+  const bscRpc = "https://bsc-dataseed1.binance.org/";
   const tokenPrice = 0.00008;
 
   useEffect(() => {
@@ -51,10 +51,10 @@ const ConnectionCard = () => {
       setContract(contract);
       setErrorMessage("");
     } else if (connector === "walletconnect") {
-      let provider = new ethers.providers.Web3Provider(walletconnect);
+      let provider = new ethers.providers.JsonRpcProvider(bscRpc);
       setProvider(provider);
 
-      let signer = provider.getSigner();
+      let signer = provider.getSigner(account);
       setSigner(signer);
 
       let contract = new ethers.Contract(contractAddress, contractabi, signer);
@@ -95,6 +95,9 @@ const ConnectionCard = () => {
     };
   });
 
+  console.log(signer);
+  console.log(account);
+
   useEffect(() => {
     let tokenAmount = parseFloat(cost) / tokenPrice;
 
@@ -130,16 +133,16 @@ const ConnectionCard = () => {
 
   const buyTokens = async () => {
     try {
-      if (userBalance < cost) {
-        setErrorMessage("BALANCE INSUFFICIENT");
-      } else if (cost < 0.2) {
-        setErrorMessage("MIN BUY 0.2 BNB!");
-      } else if (cost > 40) {
-        setErrorMessage("MAX BUY 40 BNB!");
-      } else {
-        setErrorMessage("");
-        await contract.buyTokens({ value: (cost * 10 ** 18).toString() });
-      }
+      // if (userBalance < cost) {
+      //   setErrorMessage("BALANCE INSUFFICIENT");
+      // } else if (cost < 0.2) {
+      //   setErrorMessage("MIN BUY 0.2 BNB!");
+      // } else if (cost > 40) {
+      //   setErrorMessage("MAX BUY 40 BNB!");
+      // } else {
+      //   setErrorMessage("");
+      await contract.buyTokens({ value: (cost * 10 ** 18).toString() });
+      // }
     } catch (e) {
       console.log(e);
     }
@@ -256,7 +259,7 @@ const ConnectionCard = () => {
                   <ContractLinkIcon src={outwardLinkIcon} alt="outlink" />
                 </ContractAddress>
                 <ContractAddress
-                  href="https://bscscan.com/address/0x9420203009BEDC686843248268A66D01208228EE"
+                  href="https://bscscan.com/address/0x7b7C295adc4B27C58e0465AE0505CF33c1fD964C"
                   target="_blank"
                 >
                   Presale Contract Address
