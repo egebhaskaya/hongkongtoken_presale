@@ -53,12 +53,13 @@ const ConnectionCard = () => {
     } else if (connector === "walletconnect") {
       let provider = new ethers.providers.JsonRpcProvider(bscRpc);
       setProvider(provider);
-
       let signer = provider.getSigner(account);
       setSigner(signer);
 
       let contract = new ethers.Contract(contractAddress, contractabi, signer);
-      setContract(contract);
+      let signedContract = contract.connect(signer);
+      console.log(signedContract);
+      setContract(signedContract);
       setErrorMessage("");
     }
   }, [account, connector]);
@@ -148,7 +149,9 @@ const ConnectionCard = () => {
         await contract.buyTokens({ value: (cost * 10 ** 18).toString() });
       } else if (connector === "walletconnect") {
         setErrorMessage("");
-        await contract.buyTokens({ value: (cost * 10 ** 18).toString() });
+        await contract.buyTokens({
+          value: (cost * 10 ** 18).toString(),
+        });
       }
       // }
     } catch (e) {
@@ -517,7 +520,7 @@ const StyledConnectButton = styled.button`
   height: 50px;
   width: 120px;
   border-radius: 30px;
-  font-family: roboto;
+  font-family: Roboto;
   border: 0;
   background-color: #e101f5;
   color: white;
