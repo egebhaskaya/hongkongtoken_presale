@@ -248,7 +248,7 @@ const ConnectionCard = () => {
                     onClick={buyTokens}
                     disabled={account === undefined ? true : false}
                   >
-                    BUY TOKEN
+                    BUY TOKEN TEST
                   </StyledBuyButton>
                   <StyledText>{errorMessage}</StyledText>
                 </TokenBuyBox>
