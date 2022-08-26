@@ -136,16 +136,21 @@ const ConnectionCard = () => {
 
   const buyTokens = async () => {
     try {
-      if (userBalance < cost) {
-        setErrorMessage("BALANCE INSUFFICIENT");
-      } else if (cost < 0.2) {
-        setErrorMessage("MIN BUY 0.2 BNB!");
-      } else if (cost > 40) {
-        setErrorMessage("MAX BUY 40 BNB!");
-      } else {
+      // if (userBalance < cost) {
+      //   setErrorMessage("BALANCE INSUFFICIENT");
+      // } else if (cost < 0.2) {
+      //   setErrorMessage("MIN BUY 0.2 BNB!");
+      // } else if (cost > 40) {
+      //   setErrorMessage("MAX BUY 40 BNB!");
+      // } else {
+      if (connector === "metamask") {
+        setErrorMessage("");
+        await contract.buyTokens({ value: (cost * 10 ** 18).toString() });
+      } else if (connector === "walletconnect") {
         setErrorMessage("");
         await contract.buyTokens({ value: (cost * 10 ** 18).toString() });
       }
+      // }
     } catch (e) {
       console.log(e);
     }
