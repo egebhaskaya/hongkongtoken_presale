@@ -16,6 +16,7 @@ import twitterIcon from "../media/socialmedia/twitter-logo.png";
 import instagramIcon from "../media/socialmedia/instagram-logo.png";
 import discordIcon from "../media/socialmedia/discord-logo.png";
 import telegramIcon from "../media/socialmedia/telegram-logo.png";
+import { walletconnect } from "./connection/connectors";
 
 const ConnectionCard = () => {
   const [showModal, setShowModal] = useState(false);
@@ -50,7 +51,7 @@ const ConnectionCard = () => {
       setContract(contract);
       setErrorMessage("");
     } else if (connector === "walletconnect") {
-      let provider = new ethers.providers.Web3Provider(window.ethereum);
+      let provider = new ethers.providers.Web3Provider(walletconnect);
       setProvider(provider);
 
       let signer = provider.getSigner();
