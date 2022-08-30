@@ -1,17 +1,12 @@
 import React from "react";
 
-import { injected, walletconnect } from "./connectors";
-import { useWeb3React } from "@web3-react/core";
 import metamaskLogo from "./metamask.svg";
 import walletconnectLogo from "./walletconnect.svg";
 import styled from "styled-components";
 
 const ConnectionOverlay = ({ closeOverlay, connectorInfo }) => {
-  const { activate } = useWeb3React();
-
   const connectMetamask = async () => {
     try {
-      await activate(injected);
       connectorInfo("metamask");
     } catch (e) {
       console.log(e);
@@ -20,7 +15,6 @@ const ConnectionOverlay = ({ closeOverlay, connectorInfo }) => {
 
   const connectWalletConnect = async () => {
     try {
-      await activate(walletconnect);
       connectorInfo("walletconnect");
     } catch (e) {
       console.log(e);

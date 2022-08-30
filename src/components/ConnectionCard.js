@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import ConnectionOverlay from "./connection/ConnectionOverlay";
-import { useWeb3React } from "@web3-react/core";
 import styled from "styled-components";
-import { ethers } from "ethers";
 import contractabi from "./contract/contract_abi.json";
+import Web3 from "web3";
+import WalletConnectProvider from "@walletconnect/web3-provider";
 import bgImage from "../media/images/background.jpg";
 import bnblogo from "../media/images/bnb_logo.png";
 import introvid from "../media/videos/introduction_video.mp4";
@@ -19,50 +19,67 @@ import telegramIcon from "../media/socialmedia/telegram-logo.png";
 
 const ConnectionCard = () => {
   const [showModal, setShowModal] = useState(false);
+  const [chainId, setChainId] = useState("");
+  const [account, setAccount] = useState("");
   const [connector, setConnector] = useState("");
-  const [networkID, setNetworkId] = useState();
   const [message, setMessage] = useState();
   const [contract, setContract] = useState(null);
   const [contractBalance, setContractBalance] = useState("");
   const [provider, setProvider] = useState(null);
-  const [signer, setSigner] = useState(null);
   const [userBalance, setUserBalance] = useState(null);
   const [cost, setCost] = useState();
   const [errorMessage, setErrorMessage] = useState(
     "PLEASE CONNECT YOUR WALLET!"
   );
   const [tokenAmount, setTokenAmount] = useState(0);
-
-  const { account, chainId } = useWeb3React();
+  const [wcWeb3Instance, setWcWeb3Instance] = useState();
+  const [metamaskWeb3Instance, setMetamaskWeb3Instance] = useState();
 
   const contractAddress = "0x7b7C295adc4B27C58e0465AE0505CF33c1fD964C";
-  const bscRpc = "https://bsc-dataseed1.binance.org/";
   const tokenPrice = 0.00008;
 
   useEffect(() => {
     if (connector === "metamask") {
-      let provider = new ethers.providers.Web3Provider(window.ethereum);
-      setProvider(provider);
-
-      let signer = provider.getSigner();
-      setSigner(signer);
-
-      let contract = new ethers.Contract(contractAddress, contractabi, signer);
-      setContract(contract);
-      setErrorMessage("");
+      const enabling = async () => {
+        if (window.ethereum) {
+          const accounts = await window.ethereum.request({
+            method: "eth_requestAccounts",
+          });
+          setAccount(accounts[0]);
+          const web3 = new Web3(window.ethereum);
+          setMetamaskWeb3Instance(web3);
+          const contract = new web3.eth.Contract(contractabi, contractAddress);
+          setContract(contract);
+          setErrorMessage("");
+        } else {
+          setMessage("Please install metamask");
+        }
+      };
+      enabling();
     } else if (connector === "walletconnect") {
-      let provider = new ethers.providers.JsonRpcProvider(bscRpc);
+      let provider = new WalletConnectProvider({
+        rpc: {
+          56: "https://bsc-dataseed.binance.org/",
+        },
+      });
       setProvider(provider);
-      let signer = provider.getSigner(account);
-      setSigner(signer);
-
-      let contract = new ethers.Contract(contractAddress, contractabi, signer);
-      let signedContract = contract.connect(signer);
-      console.log(signedContract);
-      setContract(signedContract);
-      setErrorMessage("");
+      const enabling = async () => {
+        try {
+          const web3 = new Web3(provider);
+          setWcWeb3Instance(web3);
+          await provider.enable();
+          const contract = new web3.eth.Contract(contractabi, contractAddress);
+          const accounts = await web3.eth.getAccounts();
+          setAccount(accounts[0]);
+          setContract(contract);
+          setErrorMessage("");
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      enabling();
     }
-  }, [account, connector]);
+  }, [connector]);
 
   useEffect(() => {
     let timer = setInterval(() => getChainId(), 1000);
@@ -76,7 +93,7 @@ const ConnectionCard = () => {
       setMessage("BSC MAINNET");
     } else if (chainId === undefined) {
       setMessage("PLEASE CONNECT WITH YOUR WALLET!");
-    } else if (chainId !== 97) {
+    } else if (chainId !== 56) {
       setMessage("PLEASE CONNECT TO BSC MAINNET");
     } else {
       setMessage("CONNECTED!");
@@ -89,8 +106,9 @@ const ConnectionCard = () => {
       clearInterval(timer);
     };
   });
+
   useEffect(() => {
-    let timer = setInterval(() => getUserBalance(account), 1000);
+    let timer = setInterval(() => getUserBalance(account.toString()), 1000);
     return function cleanup() {
       clearInterval(timer);
     };
@@ -110,15 +128,21 @@ const ConnectionCard = () => {
     }
   }, [cost]);
 
-  const getChainId = () => {
-    setNetworkId(chainId);
+  const getChainId = async () => {
+    if (connector === "metamask") {
+      const chainId = await metamaskWeb3Instance.eth.getChainId();
+      setChainId(chainId);
+    } else {
+      const chainId = await wcWeb3Instance.eth.getChainId();
+      setChainId(chainId);
+    }
   };
 
   const getContractBalance = async () => {
-    const contractBalance = await contract.balanceOf(
-      "0x7b7C295adc4B27C58e0465AE0505CF33c1fD964C"
-    );
-    setContractBalance(ethers.utils.formatEther(contractBalance));
+    const contractBalance = await contract.methods
+      .balanceOf(contractAddress)
+      .call();
+    setContractBalance(contractBalance / 10 ** 18);
   };
 
   const getUserBalance = (address) => {
@@ -126,34 +150,42 @@ const ConnectionCard = () => {
       window.ethereum
         .request({ method: "eth_getBalance", params: [address, "latest"] })
         .then((balance) => {
-          setUserBalance(ethers.utils.formatEther(balance));
+          setUserBalance(Web3.utils.hexToNumber(balance));
         });
     } else if (connector === "walletconnect") {
-      provider.getBalance(account).then((balance) => {
-        setUserBalance(ethers.utils.formatEther(balance));
-      });
+      const getWcBalance = async () => {
+        const userBalance = await wcWeb3Instance.eth.getBalance(
+          address.toString()
+        );
+        setUserBalance(userBalance);
+      };
+      getWcBalance();
     }
   };
 
   const buyTokens = async () => {
     try {
-      // if (userBalance < cost) {
-      //   setErrorMessage("BALANCE INSUFFICIENT");
-      // } else if (cost < 0.2) {
-      //   setErrorMessage("MIN BUY 0.2 BNB!");
-      // } else if (cost > 40) {
-      //   setErrorMessage("MAX BUY 40 BNB!");
-      // } else {
-      if (connector === "metamask") {
-        setErrorMessage("");
-        await contract.buyTokens({ value: (cost * 10 ** 18).toString() });
-      } else if (connector === "walletconnect") {
-        setErrorMessage("");
-        await contract.buyTokens({
-          value: (cost * 10 ** 18).toString(),
-        });
+      if (userBalance < cost) {
+        setErrorMessage("BALANCE INSUFFICIENT");
+      } else if (cost < 0.2) {
+        setErrorMessage("MIN BUY 0.2 BNB!");
+      } else if (cost > 40) {
+        setErrorMessage("MAX BUY 40 BNB!");
+      } else {
+        if (connector === "metamask") {
+          setErrorMessage("");
+          await contract.methods.buyTokens().send({
+            from: account.toString(),
+            value: (cost * 10 ** 18).toString(),
+          });
+        } else if (connector === "walletconnect") {
+          setErrorMessage("");
+          await contract.methods.buyTokens().send({
+            from: provider.accounts[0].toString(),
+            value: (cost * 10 ** 18).toString(),
+          });
+        }
       }
-      // }
     } catch (e) {
       console.log(e);
     }
@@ -223,7 +255,7 @@ const ConnectionCard = () => {
                   <ContractBalanceTextContainer>
                     <StyledText>Wallet Address:</StyledText>
                     <StyledText>
-                      {account !== undefined ? account.substring(0, 8) : ""}
+                      {account.substring(0, 5)}
                       ...
                     </StyledText>
                   </ContractBalanceTextContainer>
@@ -251,7 +283,7 @@ const ConnectionCard = () => {
                     onClick={buyTokens}
                     disabled={account === undefined ? true : false}
                   >
-                    BUY TOKEN TEST
+                    BUY TOKEN
                   </StyledBuyButton>
                   <StyledText>{errorMessage}</StyledText>
                 </TokenBuyBox>
