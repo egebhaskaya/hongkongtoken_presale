@@ -142,7 +142,7 @@ const ConnectionCard = () => {
     const contractBalance = await contract.methods
       .balanceOf(contractAddress)
       .call();
-    setContractBalance(contractBalance / 10 ** 18);
+    setContractBalance(parseInt(contractBalance) / 10 ** 18);
   };
 
   const getUserBalance = (address) => {
@@ -150,14 +150,14 @@ const ConnectionCard = () => {
       window.ethereum
         .request({ method: "eth_getBalance", params: [address, "latest"] })
         .then((balance) => {
-          setUserBalance(Web3.utils.hexToNumber(balance));
+          setUserBalance(Web3.utils.hexToNumber(balance) / 10 ** 18);
         });
     } else if (connector === "walletconnect") {
       const getWcBalance = async () => {
         const userBalance = await wcWeb3Instance.eth.getBalance(
           address.toString()
         );
-        setUserBalance(userBalance);
+        setUserBalance(parseInt(userBalance));
       };
       getWcBalance();
     }
@@ -191,6 +191,18 @@ const ConnectionCard = () => {
     }
   };
 
+  const handleDisconnect = async () => {
+    if (connector === "walletconnect") {
+      await provider.disconnect();
+    } else {
+      window.location.reload();
+    }
+  };
+
+  const handleInputChange = (e) => {
+    setCost(e.target.value);
+    console.log(typeof parseInt(cost));
+  };
   return (
     <>
       <Container>
@@ -209,6 +221,9 @@ const ConnectionCard = () => {
               <StyledText>{message}</StyledText>
               <StyledConnectButton onClick={() => setShowModal(true)}>
                 CONNECT
+              </StyledConnectButton>
+              <StyledConnectButton onClick={handleDisconnect}>
+                DISCONNECT
               </StyledConnectButton>
             </ConnectButtonsContainer>
           </ConnectContainer>
@@ -277,7 +292,7 @@ const ConnectionCard = () => {
                     placeholder="0.00 BNB"
                     type="number"
                     value={cost}
-                    onChange={(event) => setCost(event.target.value)}
+                    onChange={handleInputChange}
                   ></StyledInput>
                   <StyledBuyButton
                     onClick={buyTokens}
